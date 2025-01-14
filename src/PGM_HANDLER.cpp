@@ -17,7 +17,7 @@ Pixel::Pixel(Coordinate pcoord, float pvalue) {
 }
 
 BWPGM::BWPGM(Coordinate size, std::string filename,
-			 std::ios_base::openmode mode, uns pscale) {
+			 std::ios_base::openmode mode, unsigned short pscale) {
 	width  = size.x;
 	height = size.y;
 	img.resize(size.x * size.y, (pscale - 1) * 1);
@@ -30,7 +30,7 @@ BWPGM::BWPGM(Coordinate size, std::string filename,
 	scale = pscale;
 }
 
-unt BWPGM::ID(Coordinate coord) {
+unsigned int BWPGM::ID(Coordinate coord) {
 	return coord.x + (height - 1 - coord.y) * width;
 }
 
@@ -65,7 +65,7 @@ std::vector<Coordinate> BWPGM::line(Coordinate first, Coordinate second,
 			delta.x = -delta.x;
 			delta.y = -delta.y;
 		}
-		for(unt y = 0; y <= delta.y; y++) {
+		for(unsigned short y = 0; y <= delta.y; y++) {
 			Coordinate coord(std::round(first.x), round(y + first.y));
 			if(!to_check) {
 				result.push_back(coord);
@@ -83,7 +83,7 @@ std::vector<Coordinate> BWPGM::line(Coordinate first, Coordinate second,
 		float m		 = delta.y / delta.x;
 		bool falling = m < 0.0f;
 		float y		 = first.y;
-		for(unt i = 0; i < delta.x; i++) {
+		for(unsigned short i = 0; i < delta.x; i++) {
 			Coordinate coord(std::round(i + first.x), std::round(y));
 			if(!to_check) {
 				result.push_back(coord);
@@ -111,7 +111,7 @@ std::vector<Coordinate> BWPGM::line(Coordinate first, Coordinate second,
 		float m		 = delta.y / delta.x;
 		float x		 = first.x;
 		bool falling = delta.x < 0.0f;
-		for(unt i = 0; i <= delta.y; i++) {
+		for(unsigned short i = 0; i <= delta.y; i++) {
 			Coordinate coord(std::round(x), std::round(first.y + i));
 			if(!to_check) {
 				result.push_back(coord);
@@ -185,12 +185,12 @@ std::vector<Pixel> BWPGM::Thread(Coordinate first, Coordinate second, float norm
 		points.insert(points.end(), Line3.begin(), Line3.end());
 		points.insert(points.end(), Line4.begin(), Line4.end());
 
-		unt max_y = std::round(std::max({first_end.y, second_end.y}));
-		unt min_y = std::round(std::min({first_start.y, second_start.y}));
+		unsigned short max_y = std::round(std::max({first_end.y, second_end.y}));
+		unsigned short min_y = std::round(std::min({first_start.y, second_start.y}));
 		if(std::round(std::min({first_start.y, second_start.y})) < 0) {
 			min_y = 0;
 		}
-		for(unt i = min_y; i <= max_y; i++) {
+		for(unsigned short i = min_y; i <= max_y; i++) {
 			std::vector<Coordinate> scanline;
 			std::copy_if(points.begin(), points.end(), std::back_inserter(scanline),
 						 [&](Coordinate coord) {
@@ -228,7 +228,7 @@ void BWPGM::read() {
 	scale			 = atoi(line.c_str());
 	std::string data = "";
 	img.resize(height * width);
-	for(unt i = 0; i < width * height; i++) {
+	for(unsigned int i = 0; i < width * height; i++) {
 		uint8_t value;
 		file.read(reinterpret_cast<char*>(&value), sizeof(uint8_t));
 		img[i] = value;
@@ -238,7 +238,7 @@ void BWPGM::read() {
 
 void BWPGM::print(std::string filename) {
 	if(filename == "") {
-		for(unt i = 0; i < img.size(); i++) {
+		for(unsigned int i = 0; i < img.size(); i++) {
 			uint8_t value = img[i];
 			file.write(reinterpret_cast<char*>(&value), sizeof(uint8_t));
 		}
@@ -249,7 +249,7 @@ void BWPGM::print(std::string filename) {
 		file1 << "P5" << std::endl;
 		file1 << width << " " << width << std::endl;
 		file1 << scale << std::endl;
-		for(unt i = 0; i < img.size(); i++) {
+		for(unsigned int i = 0; i < img.size(); i++) {
 			file1 << img.at(i) << " ";
 		}
 		file1.close();
@@ -266,7 +266,7 @@ void BWPGM::add(std::vector<Pixel> arr, float tint) {
 			set(pixel.coord, img[ID(pixel.coord)] + tint * pixel.value * (scale - 1));
 		}
 }
-uns BWPGM::get(Coordinate coord) {
+unsigned short BWPGM::get(Coordinate coord) {
 	assert(check(coord));
 	return img[ID(coord)];
 }

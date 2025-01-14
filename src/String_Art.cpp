@@ -26,7 +26,7 @@ float Generator::profile(float dist) {
 	return result;
 }
 
-Generator::Generator(unt pN, unt pscale, float pwidth, float ph, float pb, float px1, float pr1) {
+Generator::Generator(unsigned int pN, unsigned int pscale, float pwidth, float ph, float pb, float px1, float pr1) {
 
 	N	  = pN;
 	scale = pscale;
@@ -39,14 +39,21 @@ Generator::Generator(unt pN, unt pscale, float pwidth, float ph, float pb, float
 	r2	  = 1.0f - r1;
 }
 
-Coordinate Generator::N2C(const unt n, const unt R) {
+/*Coordinate Generator::N2C(const unsigned int n, const unsigned int R) {
 	return Coordinate(std::round(R * std::cos(n * 2 * M_PI / N) + R), std::round(R * std::sin(n * 2 * M_PI / N) + R));
+}*/
+
+Coordinate Generator::N2C(const unsigned int n, const unsigned int R) {
+	unsigned int max = std::sqrt(N);
+	unsigned int x	 = ((float)n / max - std::floor(n / max)) * R * 2 * (1 + 1.0f / (max - 1));
+	unsigned int y	 = std::floor(n / max) / max * R * 2 * (1 + 1.0f / (max - 1));
+	return Coordinate(x, y);
 }
 
-void Generator::Read(BWPGM& target, bool IncludeWhite, unt R) {
+void Generator::Read(BWPGM& target, bool IncludeWhite, unsigned int R) {
 	float h = profile(0);
-	for(unt N0 = 0; N0 < N - 1; N0++) {
-		for(unt N1 = N0 + 1; N1 < N; N1++) {
+	for(unsigned int N0 = 0; N0 < N - 1; N0++) {
+		for(unsigned int N1 = N0 + 1; N1 < N; N1++) {
 			Coordinate first(N2C(N0, R));
 			Coordinate second(N2C(N1, R));
 			Coordinate delta(second.x - first.x, second.y - first.y);
@@ -74,21 +81,24 @@ void Generator::Read(BWPGM& target, bool IncludeWhite, unt R) {
 	}
 }
 
-void Generator::calc(float intensity, bool chooseWhite, unt max_lines, unt R) {
-	float threshold = b * h * (1.0f - r1 + x1) * (scale - 1);
+void Generator::calc(float intensity, bool chooseWhite, unsigned int max_lines, unsigned int R) {
+
+	float threshold = b * h * (r2 + x1) * (scale - 1) * intensity;
 	std::vector<Thread>* RadonRead;
 	if(chooseWhite) {
 		RadonRead = &RadonReadW;
 	} else {
 		RadonRead = &RadonReadB;
 	}
-	for(unt l = 0; l < max_lines; l++) {
+
+	for(unsigned int l = 0; l < max_lines; l++) {
 		auto predicate = [&](auto& p) -> bool {
 			return p.RT < threshold;
 		};
 		if(RadonRead->size() == 0) {
 			break;
 		}
+
 		Thread best = *std::max_element(
 			RadonRead->begin(), RadonRead->end(),
 			[](const auto& a, const auto& b) {
@@ -102,10 +112,10 @@ void Generator::calc(float intensity, bool chooseWhite, unt max_lines, unt R) {
 		Coordinate end(N2C(best.N1, R));
 		threads.push_back(best);
 
-		for(unt j = 0; j < RadonRead->size();) {
-			auto P = (RadonRead->begin() + j);
-			unt N0 = P->N0, N1 = P->N1;
-			std::pair<unt, unt> p = std::pair<unt, unt>(N0, N1);
+		for(unsigned int j = 0; j < RadonRead->size();) {
+			auto P			= (RadonRead->begin() + j);
+			unsigned int N0 = P->N0, N1 = P->N1;
+			std::pair<unsigned int, unsigned int> p = std::pair<unsigned int, unsigned int>(N0, N1);
 			if((N0 < best.N0 && best.N1 - best.N0 + N1 - N0 > best.N1 - N0)
 			   || (N0 > best.N0 && best.N1 - best.N0 + N1 - N0 > N1 - best.N0)
 					  && (best.N1 - best.N0 + N1 - N0 > best.N1 - N0)) {
@@ -148,7 +158,7 @@ void Generator::calc(float intensity, bool chooseWhite, unt max_lines, unt R) {
 	}
 }
 
-void Generator::print(BWPGM& image, float intensity, unt R) {
+void Generator::print(BWPGM& image, float intensity, unsigned int R) {
 	for(auto& i : threads) {
 		image.add(image.Thread(N2C(i.N0, R), N2C(i.N1, R), width, profile), (i.isBlack) ? -intensity : intensity);
 	}

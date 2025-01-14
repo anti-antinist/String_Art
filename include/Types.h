@@ -1,8 +1,5 @@
 #pragma once
 
-#define unt unsigned int
-#define uns unsigned short
-
 struct Pixel;
 struct Coordinate;
 struct Coordinate;
@@ -10,15 +7,15 @@ struct Coordinate;
 struct Thread {
 	public:
 
-		Thread(unt pN0, unt pN1, float pRT, bool pisBlack) {
+		Thread(unsigned short pN0, unsigned short pN1, float pRT, bool pisBlack) {
 			N0		= pN0;
 			N1		= pN1;
 			RT		= pRT;
 			isBlack = pisBlack;
 		}
-		unt N0	 = 0,
-			N1	 = 0;
-		float RT = 0;
+		unsigned short N0 = 0,
+					   N1 = 0;
+		float RT		  = 0;
 		bool isBlack;
 };
 

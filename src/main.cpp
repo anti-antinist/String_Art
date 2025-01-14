@@ -8,17 +8,15 @@
 #include <iostream>
 #include <string>
 
-#include "Types.h"
-
-uns N;
-const uns scale = 256;
+unsigned short N;
+const unsigned short scale = 256;
 float intensity;
 
 float h;
 float b;
 float x1;
 float r1;
-unt max_linesb, max_linesw;
+unsigned int max_linesb, max_linesw;
 std::string target_name, destination_name;
 
 int main(int argc, const char** argv) {
@@ -30,8 +28,8 @@ int main(int argc, const char** argv) {
 	b				 = std::atof(argv[6]);
 	x1				 = std::atof(argv[7]);
 	r1				 = std::atof(argv[8]);
-	max_linesb		 = std::atof(argv[9]);
-	max_linesw		 = std::atof(argv[10]);
+	max_linesb		 = std::atoi(argv[9]);
+	max_linesw		 = std::atoi(argv[10]);
 
 	BWPGM target(Coordinate(0, 0), target_name,
 				 std::ios_base::in, scale);
@@ -41,8 +39,7 @@ int main(int argc, const char** argv) {
 	assert(target.file.is_open() && image.file.is_open());
 	target.read();
 
-	const unt R = target.size().x / 2.0f - 1.0f;
-
+	const unsigned short R = target.size().x / 2.0f - 1;
 	Generator string_art(N, scale, b, h, b, x1, r1);
 	string_art.Read(target, true, R);
 	string_art.calc(intensity, false, max_linesb, R);

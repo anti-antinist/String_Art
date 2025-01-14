@@ -6,8 +6,8 @@
 class Generator {
 	private:
 
-		unt N;
-		unt scale;
+		unsigned int N;
+		unsigned int scale;
 		float width;
 		static float h;
 		static float b;
@@ -16,15 +16,15 @@ class Generator {
 		static float r1;
 		static float r2;
 		static float profile(float dist);
-		Coordinate N2C(const unt n, const unt R);
+		Coordinate N2C(const unsigned int n, const unsigned int R);
 		std::vector<Thread> RadonReadB;
 		std::vector<Thread> RadonReadW;
 		std::vector<Thread> threads;
 
 	public:
 
-		Generator(unt pN, unt pscale, float pwidth, float ph, float pb, float px1, float pr1);
-		void Read(BWPGM& target, bool IncludeWhite, unt R);
-		void calc(float darkness, bool chooseWhite, unt max_lines, unt R);
-		void print(BWPGM& image, float intensity, unt R);
+		Generator(unsigned int pN, unsigned int pscale, float pwidth, float ph, float pb, float px1, float pr1);
+		void Read(BWPGM& target, bool IncludeWhite, unsigned int R);
+		void calc(float darkness, bool chooseWhite, unsigned int max_lines, unsigned int R);
+		void print(BWPGM& image, float intensity, unsigned int R);
 };

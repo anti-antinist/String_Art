@@ -8,23 +8,23 @@
 class BWPGM {
 	private:
 
-		unt ID(Coordinate);
+		unsigned int ID(Coordinate);
 		bool check(Coordinate);
 		void set(Coordinate, float);
 
-		unt width, height;
-		std::vector<uns> img;
-		uns scale = 0;
+		unsigned int width, height;
+		std::vector<unsigned short> img;
+		unsigned short scale = 0;
 
 	public:
 
-		BWPGM(Coordinate, std::string, std::ios_base::openmode, uns);
+		BWPGM(Coordinate, std::string, std::ios_base::openmode, unsigned short);
 		std::vector<Pixel> Thread(Coordinate, Coordinate, float, float(float));
 		std::vector<Coordinate> line(Coordinate, Coordinate, bool);
 		void read();
 		void print(std::string filename = "");
 		void add(std::vector<Pixel>, float);
-		uns get(Coordinate);
+		unsigned short get(Coordinate);
 		Coordinate size() {
 			return Coordinate(this->width, this->height);
 		};
