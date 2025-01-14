@@ -256,16 +256,6 @@ void BWPGM::print(std::string filename) {
 	}
 }
 
-void BWPGM::makeCircle(unt R) {
-	for(unt x = 0; x < width; x++) {
-		for(unt y = 0; y < height; y++) {
-			if(std::sqrt((x - width / 2) * (x - width / 2) + (y - height / 2) * (y - height / 2)) > R) {
-				img[ID(Coordinate(x, y))] = scale - 1;
-			}
-		}
-	}
-}
-
 void BWPGM::add(std::vector<Pixel> arr, float tint) {
 	if(tint < 0.0f)
 		for(auto& pixel : arr) {

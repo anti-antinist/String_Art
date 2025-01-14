@@ -24,7 +24,6 @@ class BWPGM {
 		void read();
 		void print(std::string filename = "");
 		void add(std::vector<Pixel>, float);
-		void makeCircle(unt R);
 		uns get(Coordinate);
 		Coordinate size() {
 			return Coordinate(this->width, this->height);

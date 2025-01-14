@@ -21,16 +21,6 @@ float r1;
 unt max_linesb, max_linesw;
 std::string target_name, destination_name;
 
-float profile1(float dist) {
-	dist		 = std::abs(dist);
-	float result = 0;
-	if(dist <= b) {
-		result = 1.0f;
-	} else if(dist > b) {
-		result = 0.0f;
-	}
-	return result;
-}
 int main(int argc, const char** argv) {
 	target_name		 = std::string(argv[1]);
 	destination_name = std::string(argv[2]);
