@@ -39,15 +39,8 @@ Generator::Generator(unsigned int pN, unsigned int pscale, float pwidth, float p
 	r2	  = 1.0f - r1;
 }
 
-/*Coordinate Generator::N2C(const unsigned int n, const unsigned int R) {
-	return Coordinate(std::round(R * std::cos(n * 2 * M_PI / N) + R), std::round(R * std::sin(n * 2 * M_PI / N) + R));
-}*/
-
 Coordinate Generator::N2C(const unsigned int n, const unsigned int R) {
-	unsigned int max = std::sqrt(N);
-	unsigned int x	 = ((float)n / max - std::floor(n / max)) * R * 2 * (1 + 1.0f / (max - 1));
-	unsigned int y	 = std::floor(n / max) / max * R * 2 * (1 + 1.0f / (max - 1));
-	return Coordinate(x, y);
+	return Coordinate(std::round(R * std::cos(n * 2 * M_PI / N) + R), std::round(R * std::sin(n * 2 * M_PI / N) + R));
 }
 
 void Generator::Read(BWPGM& target, bool IncludeWhite, unsigned int R) {
