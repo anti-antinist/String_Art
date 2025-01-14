@@ -19,12 +19,11 @@ class BWPGM {
 	public:
 
 		BWPGM(Coordinate, std::string, std::ios_base::openmode, uns);
-		std::vector<Coordinate> Thread(Coordinate, Coordinate, float);
 		std::vector<Pixel> Thread(Coordinate, Coordinate, float, float(float));
 		std::vector<Coordinate> line(Coordinate, Coordinate, bool);
 		void read();
 		void print(std::string filename = "");
-		void addDark(std::vector<Pixel>, float);
+		void add(std::vector<Pixel>, float);
 		void makeCircle(unt R);
 		uns get(Coordinate);
 		Coordinate size() {

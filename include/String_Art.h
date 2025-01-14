@@ -9,8 +9,13 @@ class Generator {
 		unt N;
 		unt scale;
 		float width;
-		float threshold = -1.0f;
-		float (*profile)(float dist);
+		static float h;
+		static float b;
+		static float x1;
+		static float x2;
+		static float r1;
+		static float r2;
+		static float profile(float dist);
 		Coordinate N2C(const unt n, const unt R);
 		std::vector<Thread> RadonReadB;
 		std::vector<Thread> RadonReadW;
@@ -18,8 +23,8 @@ class Generator {
 
 	public:
 
-		Generator(unt pN, unt pscale, float pwidth, float (&pprofile)(float));
+		Generator(unt pN, unt pscale, float pwidth, float ph, float pb, float px1, float pr1);
 		void Read(BWPGM& target, bool IncludeWhite, unt R);
-		void calc(float darkness, const float pthreshold, bool chooseWhite, unt max_lines, unt R);
+		void calc(float darkness, bool chooseWhite, unt max_lines, unt R);
 		void print(BWPGM& image, float intensity, unt R);
 };

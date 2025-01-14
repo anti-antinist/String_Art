@@ -8,11 +8,35 @@
 #include "PGM_HANDLER.h"
 #include "Types.h"
 
-Generator::Generator(unt pN, unt pscale, float pwidth, float (&pprofile)(float)) {
-	N		= pN;
-	scale	= pscale;
-	width	= pwidth;
-	profile = &pprofile;
+float Generator::h;
+float Generator::b;
+float Generator::x1;
+float Generator::x2;
+float Generator::r1;
+float Generator::r2;
+
+float Generator::profile(float dist) {
+	dist		 = std::abs(dist);
+	float result = 0;
+	if(dist <= x1 * b) {
+		result = r2 * h - r1 * h / (x1 * b) * dist + r1 * h;
+	} else if(dist <= b) {
+		result = r2 * h - r2 * h / (x2 * b) * (dist - x1 * b);
+	}
+	return result;
+}
+
+Generator::Generator(unt pN, unt pscale, float pwidth, float ph, float pb, float px1, float pr1) {
+
+	N	  = pN;
+	scale = pscale;
+	width = pwidth;
+	h	  = ph;
+	b	  = ph;
+	x1	  = px1;
+	x2	  = 1.0f - x1;
+	r1	  = pr1;
+	r2	  = 1.0f - r1;
 }
 
 Coordinate Generator::N2C(const unt n, const unt R) {
@@ -50,9 +74,8 @@ void Generator::Read(BWPGM& target, bool IncludeWhite, unt R) {
 	}
 }
 
-void Generator::calc(float intensity, const float pthreshold, bool chooseWhite, unt max_lines, unt R) {
-	float h	  = profile(0);
-	threshold = pthreshold * intensity;
+void Generator::calc(float intensity, bool chooseWhite, unt max_lines, unt R) {
+	float threshold = b * h * (1.0f - r1 + x1) * (scale - 1);
 	std::vector<Thread>* RadonRead;
 	if(chooseWhite) {
 		RadonRead = &RadonReadW;
@@ -127,7 +150,7 @@ void Generator::calc(float intensity, const float pthreshold, bool chooseWhite, 
 
 void Generator::print(BWPGM& image, float intensity, unt R) {
 	for(auto& i : threads) {
-		image.addDark(image.Thread(N2C(i.N0, R), N2C(i.N1, R), width, profile), (i.isBlack) ? -intensity : intensity);
+		image.add(image.Thread(N2C(i.N0, R), N2C(i.N1, R), width, profile), (i.isBlack) ? -intensity : intensity);
 	}
 	threads.clear();
 }

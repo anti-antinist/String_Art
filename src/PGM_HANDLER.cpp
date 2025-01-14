@@ -139,7 +139,6 @@ std::vector<Pixel> BWPGM::Thread(Coordinate first, Coordinate second, float norm
 	assert(check(first) && check(second));
 	Coordinate delta(second.x - first.x, second.y - first.y);
 	std::vector<Pixel> result;
-
 	auto push_points = [&](std::vector<Coordinate>& coords) -> void {
 		const int constant_1 = second.x * first.y - second.y * first.x,
 				  constant_2 = sqrt(delta.y * delta.y + delta.x * delta.x);
@@ -267,7 +266,7 @@ void BWPGM::makeCircle(unt R) {
 	}
 }
 
-void BWPGM::addDark(std::vector<Pixel> arr, float tint) {
+void BWPGM::add(std::vector<Pixel> arr, float tint) {
 	if(tint < 0.0f)
 		for(auto& pixel : arr) {
 			set(pixel.coord, img[ID(pixel.coord)] * (1 + tint * pixel.value));
