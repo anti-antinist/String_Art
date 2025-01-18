@@ -17,10 +17,10 @@ Pixel::Pixel(Coordinate pcoord, float pvalue) {
 }
 
 BWPGM::BWPGM(Coordinate size, std::string filename,
-			 std::ios_base::openmode mode, unsigned short pscale) {
+			 std::ios_base::openmode mode, unsigned short pscale, unsigned short default_val) {
 	width  = size.x;
 	height = size.y;
-	img.resize(size.x * size.y, (pscale - 1) * 1);
+	img.resize(size.x * size.y, default_val);
 	file.open(filename, mode);
 	if(mode == std::ios_base::out) {
 		file << "P5" << std::endl;

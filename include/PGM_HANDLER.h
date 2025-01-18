@@ -18,7 +18,7 @@ class BWPGM {
 
 	public:
 
-		BWPGM(Coordinate, std::string, std::ios_base::openmode, unsigned short);
+		BWPGM(Coordinate, std::string, std::ios_base::openmode, unsigned short, unsigned short = 0);
 		std::vector<Pixel> Thread(Coordinate, Coordinate, float, float(float));
 		std::vector<Coordinate> line(Coordinate, Coordinate, bool);
 		void read();
