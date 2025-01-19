@@ -47,7 +47,7 @@ The inputs are as:
 
 - **`intensity`** The name says it. To further clarify the difference between `intensity` and `h`. The program will read the pixels from `target` as `pixel.value * h`, but the thread which will be drawn will have a darkness/whiteness `h * intensity * 255`.
 
-- The following image can be used for tuning `x1,r1,h,b` . https://www.desmos.com/geometry/kx5avzuscm can be used as assistance. 
+- The following image can be used for tuning **`x1,r1,h,b`**. https://www.desmos.com/geometry/kx5avzuscm can be used as assistance. 
 
 ![title](Help/image.png)
 
