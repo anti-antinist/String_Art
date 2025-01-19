@@ -55,6 +55,8 @@ The inputs are as:
 
 - **`max_liness`** The maximum number of threads having the same colour as the background (drawn secondly).
 
+- **`default_val`** The background will be black if `default_val` is `0`, else white.
+
 ## Customization
 
 The ``Coordinate Generator::N2C(const unsigned int n, const unsigned int R)`` in `String_art.cpp` is written to arrange the nails in circular pattern. This can be changed to make new types of shapes/lattices. For example, to arrange nails in a regular grid,
